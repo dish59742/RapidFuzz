@@ -110,6 +110,7 @@ jobs:
           path: ./wheelhouse/*.whl
           
   build_wheels_aarch64:
+    needs: [test_python]
     name: Build wheels on ${{ matrix.os }}, ${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
     strategy:
