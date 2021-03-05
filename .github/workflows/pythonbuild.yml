@@ -115,12 +115,8 @@ jobs:
           
   build_wheels_aarch64:
     needs: [test_python]
-    name: Build wheels on ${{ matrix.os }}, ${{ matrix.arch }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-18.04]
-        arch: [aarch64]
+    name: Build wheels on 
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v2
@@ -142,7 +138,7 @@ jobs:
         run: |
           python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_ARCHS_LINUX: ${{ matrix.arch }}
+          CIBW_ARCHS_LINUX: aarch64
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
