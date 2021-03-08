@@ -88,7 +88,6 @@ jobs:
       CIBW_BUILD: cp*
       CIBW_MANYLINUX_X86_64_IMAGE: manylinux1
       CIBW_MANYLINUX_I686_IMAGE: manylinux1
-      ARCH: auto aarch64
 
     steps:
       - uses: actions/checkout@v1
@@ -115,10 +114,16 @@ jobs:
           
   build_wheels_aarch64:
     needs: [test_python]
-    name: Build wheels on 
+    name: Build wheels on aarch64 for ${{matrix.cfg.python_tag}}
     runs-on: ubuntu-18.04
     strategy:
-      fail-fast: false
+      matrix:
+        cfg:
+        - { python_tag: "cp35-*" }
+        - { python_tag: "cp36-*" }
+        - { python_tag: "cp37-*" }
+        - { python_tag: "cp38-*" }
+        - { python_tag: "cp39-*"}
 
     steps:
       - uses: actions/checkout@v2
@@ -141,6 +146,7 @@ jobs:
           python -m cibuildwheel --output-dir wheelhouse
         env:
           CIBW_ARCHS_LINUX: aarch64
+          CIBW_BUILD: ${{matrix.cfg.python_tag}}
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
