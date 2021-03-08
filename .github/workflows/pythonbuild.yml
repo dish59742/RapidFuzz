@@ -114,17 +114,13 @@ jobs:
           
   build_wheels_aarch64:
     needs: [test_python]
-    name: Build wheels on aarch64 for ${{matrix.cfg.python_tag}}
+    name: Build wheels on aarch64 for ${{matrix.python_tag}}
     runs-on: ubuntu-18.04
     strategy:
+      fail-fast: false
       matrix:
-        cfg:
-        - { python_tag: "cp35-*" }
-        - { python_tag: "cp36-*" }
-        - { python_tag: "cp37-*" }
-        - { python_tag: "cp38-*" }
-        - { python_tag: "cp39-*"}
-
+        pyhon_tag: [ "cp35-*", "cp36-*", "cp37-*", "cp38-*", "cp39-*"]
+       
     steps:
       - uses: actions/checkout@v2
         with:
@@ -146,7 +142,7 @@ jobs:
           python -m cibuildwheel --output-dir wheelhouse
         env:
           CIBW_ARCHS_LINUX: aarch64
-          CIBW_BUILD: ${{matrix.cfg.python_tag}}
+          CIBW_BUILD: ${{matrix.python_tag}}
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
