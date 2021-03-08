@@ -119,7 +119,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pyhon_tag: [ "cp35-*", "cp36-*", "cp37-*", "cp38-*", "cp39-*"]
+        python_tag: [ "cp35-*", "cp36-*", "cp37-*", "cp38-*", "cp39-*"]
        
     steps:
       - uses: actions/checkout@v2
