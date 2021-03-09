@@ -58,6 +58,9 @@ jobs:
         os: [ windows-latest, macos-latest]
     env:
       CIBW_BUILD: ${{matrix.python_tag}}
+      CIBW_TEST_REQUIRES: pytest hypothesis pandas
+      CIBW_TEST_COMMAND: pytest {package}/tests
+      CIBW_TEST_SKIP: pp*
 
     steps:
       - uses: actions/checkout@v1
@@ -84,6 +87,9 @@ jobs:
     env:
       CIBW_ARCHS_LINUX: ${{matrix.arch}}
       CIBW_BUILD: ${{matrix.python_tag}}
+      CIBW_TEST_REQUIRES: pytest hypothesis pandas
+      CIBW_TEST_COMMAND: pytest {package}/tests
+      CIBW_TEST_SKIP: pp*
        
     steps:
       - uses: actions/checkout@v2
