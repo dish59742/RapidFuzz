@@ -64,13 +64,8 @@ jobs:
         with:
           submodules: 'true'
 
-      - uses: actions/setup-python@v1
-        name: Install Python
-        with:
-          python-version: '3.7'
-
       - name: Build wheels
-        uses: joerick/cibuildwheel@v1.9.0
+        uses: joerick/cibuildwheel@v1.10.0
         with:
           output-dir: wheelhouse
       - uses: actions/upload-artifact@v2
@@ -86,6 +81,9 @@ jobs:
       matrix:
         arch: [auto, aarch64, ppc64le, s390x]
         python_tag: [ "cp35-*", "cp36-*", "cp37-*", "cp38-*", "cp39-*"]
+    env:
+      CIBW_ARCHS_LINUX: ${{matrix.arch}}
+      CIBW_BUILD: ${{matrix.python_tag}}
        
     steps:
       - uses: actions/checkout@v2
@@ -97,21 +95,14 @@ jobs:
         with:
           python-version: "3.8"
 
-      - name: Install cibuildwheel
-        run: |
-          python -m pip install cibuildwheel~=1.8.0
       - uses: docker/setup-qemu-action@v1
         name: Set up QEMU
 
-      - name: Build wheel
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse
-        env:
-          CIBW_ARCHS_LINUX: ${{matrix.arch}}
-          CIBW_BUILD: ${{matrix.python_tag}}
-      - name: list artifacts
-        run: |
-          ls ./wheelhouse
+      - name: Build wheels
+        uses: joerick/cibuildwheel@v1.10.0
+        with:
+          output-dir: wheelhouse
+      
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
